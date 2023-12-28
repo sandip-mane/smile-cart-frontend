@@ -1,5 +1,8 @@
 import { Typography } from "@bigbinary/neetoui";
 
+import Carousel from "./Carousel";
+import { IMAGE_URLS } from "./constants";
+
 const Product = () => (
   <div className="px-6 pb-6">
     <div>
@@ -9,12 +12,8 @@ const Product = () => (
       <hr className="border-2 border-black" />
     </div>
     <div className="mt-6 flex gap-4">
-      <div className="w-2/5">
-        <img
-          alt="Product"
-          className="h-64 w-10/12"
-          src="https://i.dummyjson.com/data/products/9/thumbnail.jpg"
-        />
+      <div className="flex w-2/5 flex-col items-center">
+        <Carousel imageUrls={IMAGE_URLS} title="Infinix INBOOK" />
       </div>
       <div className="w-3/5 space-y-4">
         <Typography>
