@@ -1,21 +1,27 @@
 import { useState, useEffect } from "react";
 
-import { Typography, Spinner } from "@bigbinary/neetoui";
+import { Typography } from "@bigbinary/neetoui";
 import productsApi from "apis/products";
+import { Header, PageLoader, PageNotFound } from "components/commons";
 import { append, isNotNil } from "ramda";
+import { useParams } from "react-router-dom";
 
 import Carousel from "./Carousel";
 
 const Product = () => {
+  const { slug } = useParams();
+
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const [product, setProduct] = useState({});
 
   const fetchProduct = async () => {
     try {
-      const response = await productsApi.show();
+      const response = await productsApi.show(slug);
       setProduct(response);
     } catch (error) {
       console.log("Error", error);
+      setIsError(true);
     } finally {
       setIsLoading(false);
     }
@@ -30,22 +36,13 @@ const Product = () => {
   const totalDiscounts = mrp - offerPrice;
   const discountPercentage = ((totalDiscounts / mrp) * 100).toFixed(1);
 
-  if (isLoading) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <Spinner />
-      </div>
-    );
-  }
+  if (isLoading) return <PageLoader />;
+
+  if (isError) return <PageNotFound />;
 
   return (
     <div className="px-6 pb-6">
-      <div>
-        <Typography className="py-2" style="h1" weight="semibold">
-          {name}
-        </Typography>
-        <hr className="border-2 border-black" />
-      </div>
+      <Header shouldShowBackButton title={name} />
       <div className="mt-6 flex gap-4">
         <div className="flex w-2/5 flex-col items-center">
           {isNotNil(imageUrls) ? (
