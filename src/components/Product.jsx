@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 
 import { Typography, Spinner } from "@bigbinary/neetoui";
-import axios from "axios";
+import productsApi from "apis/products";
 import { append, isNotNil } from "ramda";
 
 import Carousel from "./Carousel";
-import { PRODUCT_URL } from "./constants";
 
 const Product = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,7 +12,7 @@ const Product = () => {
 
   const fetchProduct = async () => {
     try {
-      const response = await axios.get(PRODUCT_URL);
+      const response = await productsApi.show();
       setProduct(response.data);
     } catch (error) {
       console.log("Error", error);
