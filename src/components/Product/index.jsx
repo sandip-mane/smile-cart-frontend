@@ -10,12 +10,14 @@ import {
 } from "components/commons";
 import useSelectedQuantity from "components/hooks/useSelectedQuantity";
 import { append, isNotNil } from "ramda";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import routes from "routes";
 
 import Carousel from "./Carousel";
 
 const Product = () => {
+  const { t } = useTranslation();
   const { slug } = useParams();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +31,7 @@ const Product = () => {
       const response = await productsApi.show(slug);
       setProduct(response);
     } catch (error) {
-      console.log("Error", error);
+      console.log(t("error.generic", { error }));
       setIsError(true);
     } finally {
       setIsLoading(false);
@@ -71,16 +73,18 @@ const Product = () => {
         </div>
         <div className="w-3/5 space-y-4">
           <Typography>{description}</Typography>
-          <Typography>MRP: {mrp}</Typography>
-          <Typography weight="semibold">Offer price: {offerPrice}</Typography>
+          <Typography>{t("product.mrp", { mrp })}</Typography>
+          <Typography weight="semibold">
+            {t("product.offerPrice", { offerPrice })}
+          </Typography>
           <Typography className="text-green-600" weight="semibold">
-            {discountPercentage}% off
+            {t("product.off", { percent: discountPercentage })}
           </Typography>
           <div className="flex space-x-10">
             <AddToCart {...{ availableQuantity, slug }} />
             <Button
               className="bg-neutral-800 hover:bg-neutral-950"
-              label="Buy now"
+              label={t("buyNow")}
               size="large"
               to={routes.checkout}
               onClick={() => setSelectedQuantity(selectedQuantity || 1)}

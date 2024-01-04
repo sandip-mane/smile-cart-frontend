@@ -6,12 +6,14 @@ import { MRP, OFFER_PRICE } from "components/constants";
 import { cartTotalOf } from "components/utils";
 import { NoData, Toastr } from "neetoui";
 import { keys, isEmpty } from "ramda";
+import { useTranslation } from "react-i18next";
 import useCartItemsStore from "stores/useCartItemsStore";
 
 import PriceCard from "./PriceCard";
 import ProductCard from "./ProductCard";
 
 const Cart = () => {
+  const { t } = useTranslation();
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -33,14 +35,13 @@ const Cart = () => {
 
         setSelectedQuantity(slug, availableQuantity);
         if (availableQuantity === 0) {
-          Toastr.error(
-            `${name} is no longer available and has been removed from cart`,
-            { autoClose: 3000 }
-          );
+          Toastr.error(t("error.removedFromCart", { name }), {
+            autoClose: 3000,
+          });
         }
       });
     } catch (error) {
-      console.log("An error occurred:", error);
+      console.log(t("error.generic", { error }));
     } finally {
       setIsLoading(false);
     }
@@ -55,10 +56,10 @@ const Cart = () => {
 
   return (
     <>
-      <Header shouldShowBackButton title="My Cart" />
+      <Header shouldShowBackButton title={t("cart.title")} />
       {isEmpty(products) ? (
         <div className="flex h-screen items-center justify-center">
-          <NoData title="Your cart is empty!" />
+          <NoData title={t("cart.empty")} />
         </div>
       ) : (
         <div className="mt-10 flex justify-center space-x-10">

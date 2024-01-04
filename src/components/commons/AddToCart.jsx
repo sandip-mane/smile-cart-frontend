@@ -2,10 +2,12 @@ import { TooltipWrapper } from "components/commons";
 import useSelectedQuantity from "components/hooks/useSelectedQuantity";
 import { Button } from "neetoui";
 import { isNil } from "ramda";
+import { useTranslation } from "react-i18next";
 
 import ProductQuantity from "./ProductQuantity";
 
 const AddToCart = ({ availableQuantity, slug }) => {
+  const { t } = useTranslation();
   const { selectedQuantity, setSelectedQuantity } = useSelectedQuantity(slug);
 
   const handleAdd = e => {
@@ -18,13 +20,13 @@ const AddToCart = ({ availableQuantity, slug }) => {
   if (isNil(selectedQuantity)) {
     return (
       <TooltipWrapper
-        content="Product unavailable"
+        content={t("error.unavailable")}
         position="top"
         showTooltip={availableQuantity === 0}
       >
         <Button
           disabled={availableQuantity === 0}
-          label="Add to cart"
+          label={t("product.addToCart")}
           size="large"
           onClick={handleAdd}
         />

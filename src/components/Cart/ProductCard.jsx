@@ -3,6 +3,7 @@ import { useState } from "react";
 import ProductQuantity from "components/commons/ProductQuantity";
 import { Delete } from "neetoicons";
 import { Typography, Alert } from "neetoui";
+import { useTranslation, Trans } from "react-i18next";
 import useCartItemsStore from "stores/useCartItemsStore";
 
 const ProductCard = ({
@@ -13,6 +14,7 @@ const ProductCard = ({
   name,
   availableQuantity,
 }) => {
+  const { t } = useTranslation();
   const removeCartItem = useCartItemsStore.pickFrom();
   const [shouldShowDeleteAlert, setShouldShowDeleteAlert] = useState(false);
 
@@ -24,8 +26,10 @@ const ProductCard = ({
           <Typography className="mb-2" style="h4" weight="bold">
             {name}
           </Typography>
-          <Typography style="body2">MRP: ${mrp}</Typography>
-          <Typography style="body2">Offer price: ${offerPrice}</Typography>
+          <Typography style="body2">{t("product.mrp", { mrp })}</Typography>
+          <Typography style="body2">
+            {t("product.offerPrice", { offerPrice })}
+          </Typography>
         </div>
         <div className="flex items-center space-x-2">
           <ProductQuantity {...{ availableQuantity, slug }} />
@@ -35,12 +39,15 @@ const ProductCard = ({
           />
           <Alert
             isOpen={shouldShowDeleteAlert}
-            submitButtonLabel="Yes, remove"
-            title="Remove item?"
+            submitButtonLabel={t("removeItemConfirmation.button")}
+            title={t("removeItemConfirmation.title")}
             message={
               <Typography>
-                You are removing <strong>{name}</strong> from cart. Do you want
-                to continue?
+                <Trans
+                  components={{ strong: <strong /> }}
+                  i18nKey="removeItemConfirmation.message"
+                  values={{ name }}
+                />
               </Typography>
             }
             onClose={() => setShouldShowDeleteAlert(false)}

@@ -4,8 +4,10 @@ import { TooltipWrapper } from "components/commons";
 import { VALID_COUNT_REGEX } from "components/constants";
 import useSelectedQuantity from "components/hooks/useSelectedQuantity";
 import { Button, Input, Toastr } from "neetoui";
+import { useTranslation } from "react-i18next";
 
 const ProductQuantity = ({ availableQuantity, slug }) => {
+  const { t } = useTranslation();
   const countInputRef = useRef(null);
 
   const { selectedQuantity, setSelectedQuantity } = useSelectedQuantity(slug);
@@ -24,7 +26,7 @@ const ProductQuantity = ({ availableQuantity, slug }) => {
     const isNotValidInputQuantity = parseInt(value) > availableQuantity;
 
     if (isNotValidInputQuantity) {
-      Toastr.error(`Only ${availableQuantity} units are available`, {
+      Toastr.error(t("error.availability", { count: availableQuantity }), {
         autoClose: 2000,
       });
       setSelectedQuantity(availableQuantity);
@@ -55,7 +57,7 @@ const ProductQuantity = ({ availableQuantity, slug }) => {
         onClick={preventNavigation}
       />
       <TooltipWrapper
-        content="Reached maximum units"
+        content={t("error.maxUnits")}
         position="top"
         showTooltip={isNotValidQuantity}
       >

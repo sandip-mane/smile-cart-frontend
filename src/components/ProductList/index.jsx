@@ -6,10 +6,12 @@ import useDebounce from "hooks/useDebounce";
 import { Search } from "neetoicons";
 import { Input, NoData } from "neetoui";
 import { isEmpty } from "ramda";
+import { useTranslation } from "react-i18next";
 
 import ProductListItem from "./ProductListItem";
 
 const ProductList = () => {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,7 +24,7 @@ const ProductList = () => {
       });
       setProducts(products);
     } catch (error) {
-      console.log("Error", error);
+      console.log(t("error.generic", { error }));
     } finally {
       setIsLoading(false);
     }
@@ -38,10 +40,10 @@ const ProductList = () => {
   return (
     <div className="px-6 pb-6">
       <Header
-        title="Smile Cart"
+        title={t("title")}
         actionBlock={
           <Input
-            placeholder="Search products"
+            placeholder={t("searchProducts")}
             prefix={<Search />}
             type="search"
             value={searchTerm}
@@ -51,7 +53,7 @@ const ProductList = () => {
       />
       <div className="flex h-screen flex-col">
         {isEmpty(products) ? (
-          <NoData className="h-full w-full" title="No products to show" />
+          <NoData className="h-full w-full" title={t("noData")} />
         ) : (
           <div className="grid grid-cols-4 gap-4 p-4">
             {products.map(product => (
