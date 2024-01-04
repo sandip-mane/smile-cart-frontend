@@ -1,18 +1,10 @@
+import { AddToCart } from "components/commons";
 import { Typography } from "neetoui";
 import { Link } from "react-router-dom";
 import routes from "routes";
 import { buildUrl } from "utils/url";
 
-import AddToCart from "./AddToCart";
-
-const ProductListItem = ({
-  name,
-  slug,
-  offerPrice,
-  imageUrl,
-  isInCart,
-  toggleIsInCart,
-}) => (
+const ProductListItem = ({ name, slug, offerPrice, imageUrl }) => (
   <Link
     className="flex flex-col items-center rounded border-2 p-4"
     to={buildUrl(routes.products.show, { slug })}
@@ -22,7 +14,7 @@ const ProductListItem = ({
       {name}
     </Typography>
     <Typography>${offerPrice}</Typography>
-    <AddToCart {...{ isInCart, toggleIsInCart }} />
+    <AddToCart {...{ slug }} />
   </Link>
 );
 
