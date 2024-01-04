@@ -3,7 +3,16 @@ import { Link } from "react-router-dom";
 import routes from "routes";
 import { buildUrl } from "utils/url";
 
-const ProductListItem = ({ name, slug, offerPrice, imageUrl }) => (
+import AddToCart from "./AddToCart";
+
+const ProductListItem = ({
+  name,
+  slug,
+  offerPrice,
+  imageUrl,
+  isInCart,
+  toggleIsInCart,
+}) => (
   <Link
     className="flex flex-col items-center rounded border-2 p-4"
     to={buildUrl(routes.products.show, { slug })}
@@ -13,6 +22,7 @@ const ProductListItem = ({ name, slug, offerPrice, imageUrl }) => (
       {name}
     </Typography>
     <Typography>${offerPrice}</Typography>
+    <AddToCart {...{ isInCart, toggleIsInCart }} />
   </Link>
 );
 
