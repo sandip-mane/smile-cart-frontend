@@ -37,7 +37,15 @@ const Product = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { name, description, mrp, offerPrice, imageUrl, imageUrls } = product;
+  const {
+    name,
+    description,
+    mrp,
+    offerPrice,
+    imageUrl,
+    imageUrls,
+    availableQuantity,
+  } = product;
 
   const totalDiscounts = mrp - offerPrice;
   const discountPercentage = ((totalDiscounts / mrp) * 100).toFixed(1);
@@ -64,7 +72,7 @@ const Product = () => {
           <Typography className="text-green-600" weight="semibold">
             {discountPercentage}% off
           </Typography>
-          <AddToCart {...{ slug }} />
+          <AddToCart {...{ availableQuantity, slug }} />
         </div>
       </div>
     </div>
