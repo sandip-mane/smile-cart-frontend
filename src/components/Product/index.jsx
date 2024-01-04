@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { Typography } from "@bigbinary/neetoui";
+import { Typography, Button } from "@bigbinary/neetoui";
 import productsApi from "apis/products";
 import {
   Header,
@@ -8,8 +8,10 @@ import {
   PageNotFound,
   AddToCart,
 } from "components/commons";
+import useSelectedQuantity from "components/hooks/useSelectedQuantity";
 import { append, isNotNil } from "ramda";
 import { useParams } from "react-router-dom";
+import routes from "routes";
 
 import Carousel from "./Carousel";
 
@@ -19,6 +21,8 @@ const Product = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [product, setProduct] = useState({});
+
+  const { selectedQuantity, setSelectedQuantity } = useSelectedQuantity(slug);
 
   const fetchProduct = async () => {
     try {
@@ -72,7 +76,16 @@ const Product = () => {
           <Typography className="text-green-600" weight="semibold">
             {discountPercentage}% off
           </Typography>
-          <AddToCart {...{ availableQuantity, slug }} />
+          <div className="flex space-x-10">
+            <AddToCart {...{ availableQuantity, slug }} />
+            <Button
+              className="bg-neutral-800 hover:bg-neutral-950"
+              label="Buy now"
+              size="large"
+              to={routes.checkout}
+              onClick={() => setSelectedQuantity(selectedQuantity || 1)}
+            />
+          </div>
         </div>
       </div>
     </div>
