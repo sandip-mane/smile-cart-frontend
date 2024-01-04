@@ -52,7 +52,7 @@ const PriceCard = ({ totalMrp, totalOfferPrice }) => {
       <div className="flex flex-col items-center pt-4">
         <Button
           className="bg-neutral-800"
-          label={t("product.buyNow")}
+          label={t("buyNow")}
           to={routes.checkout}
         />
       </div>

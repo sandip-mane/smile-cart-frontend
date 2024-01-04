@@ -1,5 +1,6 @@
 {
   "title": "Smile Cart",
+  "pageTitle": "{{title}} | Smile Cart",
   "buyNow": "Buy now",
   "searchProducts": "Search Products",
   "noData": "No products to show",
