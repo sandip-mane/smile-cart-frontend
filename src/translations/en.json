@@ -60,5 +60,16 @@
     "availability_one": "Only {{count}} unit is available.",
     "availability_other": "Only {{count}} units are available.",
     "removedFromCart": "{{name}} is no longer available and has been removed from cart."
+  },
+  "validations": {
+    "emailRequired": "Email address is required",
+    "firstNameRequired": "First name is required",
+    "lastNameRequired": "Last name is required",
+    "addressRequired": "Address is required",
+    "apartmentRequired": "Apartment is required",
+    "cityRequired": "City is required",
+    "stateRequired": "State is required",
+    "zipCodeRequired": "Zip code is required",
+    "emailInvalid": "Email address is invalid"
   }
 }

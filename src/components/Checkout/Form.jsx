@@ -39,24 +39,17 @@ const Form = () => {
       <Typography className="pt-5" style="h3" weight="semibold">
         {t("checkout.form.shippingAddress")}
       </Typography>
-      <Select
-        required
-        label={t("checkout.form.country")}
-        name="country"
-        optionRemapping={{ label: "name", value: "code" }}
-        options={countries}
-        placeholder={t("checkout.form.selectCountry")}
-        size="large"
-        value={country}
-        onChange={handleChangeCountry}
-      />
       <div className="flex space-x-2">
-        <Input
+        <Select
           required
-          label={t("checkout.form.city")}
-          name="city"
-          placeholder={t("checkout.form.enterCity")}
+          label={t("checkout.form.country")}
+          name="country"
+          optionRemapping={{ label: "name", value: "code" }}
+          options={countries}
+          placeholder={t("checkout.form.selectCountry")}
           size="large"
+          value={country}
+          onChange={handleChangeCountry}
         />
         <Select
           required
