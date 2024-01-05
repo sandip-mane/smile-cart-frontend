@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
-
-import productsApi from "apis/products";
 import { Header, PageLoader } from "components/commons";
 import { MRP, OFFER_PRICE } from "components/constants";
 import { cartTotalOf } from "components/utils";
+import { useFetchCartProducts } from "hooks/reactQuery/useProductsApi";
 import i18n from "i18next";
-import { NoData, Toastr } from "neetoui";
+import { NoData } from "neetoui";
 import { keys, isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 import useCartItemsStore from "stores/useCartItemsStore";
@@ -16,43 +14,13 @@ import ProductCard from "./ProductCard";
 
 const Cart = () => {
   const { t } = useTranslation();
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const { cartItems, setSelectedQuantity } = useCartItemsStore.pick();
+  const { cartItems } = useCartItemsStore.pick();
   const slugs = keys(cartItems);
+  const { data: products = [], isLoading } = useFetchCartProducts(slugs);
 
   const totalMrp = cartTotalOf(products, MRP);
   const totalOfferPrice = cartTotalOf(products, OFFER_PRICE);
-
-  const fetchCartProducts = async () => {
-    try {
-      const responses = await Promise.all(
-        slugs.map(slug => productsApi.show(slug))
-      );
-      setProducts(responses);
-
-      responses.forEach(({ availableQuantity, name, slug }) => {
-        if (availableQuantity >= cartItems[slug]) return;
-
-        setSelectedQuantity(slug, availableQuantity);
-        if (availableQuantity === 0) {
-          Toastr.error(t("error.removedFromCart", { name }), {
-            autoClose: 3000,
-          });
-        }
-      });
-    } catch (error) {
-      console.log(t("error.generic", { error }));
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchCartProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cartItems]);
 
   if (isLoading) return <PageLoader />;
 
