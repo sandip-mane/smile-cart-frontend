@@ -1,10 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 
 import classNames from "classnames";
+import { useShowProduct } from "hooks/reactQuery/useProductsApi";
 import { Left, Right } from "neetoicons";
 import { Button } from "neetoui";
+import { useParams } from "react-router-dom";
 
-const Carousel = ({ title, imageUrls }) => {
+const Carousel = () => {
+  const { slug } = useParams();
+  const { data: { imageUrl, imageUrls, title } = {} } = useShowProduct(slug);
+  const allImageUrls = [imageUrl, ...imageUrls];
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const timerRef = useRef(null);
 
@@ -21,13 +27,13 @@ const Carousel = ({ title, imageUrls }) => {
   };
 
   const handleNext = () => {
-    setCurrentIndex(prevIndex => (prevIndex + 1) % imageUrls.length);
+    setCurrentIndex(prevIndex => (prevIndex + 1) % allImageUrls.length);
     resetTimer();
   };
 
   const handlePrevious = () => {
     setCurrentIndex(
-      prevIndex => (prevIndex - 1 + imageUrls.length) % imageUrls.length
+      prevIndex => (prevIndex - 1 + allImageUrls.length) % allImageUrls.length
     );
     resetTimer();
   };
@@ -44,7 +50,7 @@ const Carousel = ({ title, imageUrls }) => {
         <img
           alt={title}
           className="max-w-56 h-56 max-h-56 w-56"
-          src={imageUrls[currentIndex]}
+          src={allImageUrls[currentIndex]}
         />
         <Button
           className="shrink-0 focus-within:ring-0 hover:bg-transparent"
@@ -54,7 +60,7 @@ const Carousel = ({ title, imageUrls }) => {
         />
       </div>
       <div className="flex items-center gap-2">
-        {imageUrls.map((_, index) => (
+        {allImageUrls.map((_, index) => (
           <span
             key={index}
             className={classNames(

@@ -1,7 +1,4 @@
-import { useState, useEffect } from "react";
-
 import { Typography, Button } from "@bigbinary/neetoui";
-import productsApi from "apis/products";
 import {
   Header,
   PageLoader,
@@ -9,7 +6,8 @@ import {
   AddToCart,
 } from "components/commons";
 import useSelectedQuantity from "components/hooks/useSelectedQuantity";
-import { append, isNotNil } from "ramda";
+import { useShowProduct } from "hooks/reactQuery/useProductsApi";
+import { isNotNil } from "ramda";
 import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -21,28 +19,9 @@ const Product = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [product, setProduct] = useState({});
+  const { data: product = {}, isLoading, isError } = useShowProduct(slug);
 
   const { selectedQuantity, setSelectedQuantity } = useSelectedQuantity(slug);
-
-  const fetchProduct = async () => {
-    try {
-      const response = await productsApi.show(slug);
-      setProduct(response);
-    } catch (error) {
-      console.log(t("error.generic", { error }));
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchProduct();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const {
     name,
@@ -71,7 +50,7 @@ const Product = () => {
         <div className="mt-6 flex gap-4">
           <div className="flex w-2/5 flex-col items-center">
             {isNotNil(imageUrls) ? (
-              <Carousel imageUrls={append(imageUrl, imageUrls)} title={name} />
+              <Carousel />
             ) : (
               <img alt={name} className="w-48" src={imageUrl} />
             )}
